@@ -1,0 +1,31 @@
+= prometheus_ranch_example
+
+Set up listeners in `config/sys.config`.
+
+Use `prometheus_ranch_example_client` to communicate.
+
+== Example
+
+Assuming you have a listener named `tcp_echo` running, which echoes back
+everything it receives.
+
+[source,erlang]
+----
+1> {ok, C} = prometheus_ranch_example_client:connect(tcp_echo, [binary]).
+{ok, #Port<0.11>}
+
+2> prometheus_ranch_example_client:send(C, <<"foo">>).
+ok
+
+3> prometheus_ranch_example_client:recv(C).
+{ok, <<"foo">>}
+
+4> prometheus_ranch_example_client:talk(C, <<"bar">>).
+{ok, <<"bar">>}
+
+5> prometheus_ranch_example_client:talk_random(C, 100).
+{ok, <100 bytes of random data>}
+
+6> prometheus_ranch_example_client:close(C).
+ok
+----
